@@ -1,6 +1,6 @@
 package faang.school.notificationservice.messaging;
 
-import faang.school.notificationservice.dto.FollowerEvent;
+import faang.school.notificationservice.dto.SubscribEventDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -12,17 +12,17 @@ import java.util.Locale;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UnfollowMessageBuilder implements MessageBuilder<FollowerEvent> {
+public class UnfollowMessageBuilder implements MessageBuilder<SubscribEventDto> {
 
     private final MessageSource messageSource;
 
     @Override
     public Class<?> getInstance() {
-        return FollowerEvent.class;
+        return SubscribEventDto.class;
     }
 
     @Override
-    public String buildMessage(FollowerEvent event, Locale locale) {
+    public String buildMessage(SubscribEventDto event, Locale locale) {
         log.debug("Ключ сообщения: {}", "unfollow.message");
         String eventTimeFormatted = event.getEventTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", locale));
         String message = messageSource.getMessage(

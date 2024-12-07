@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class FollowerEvent {
+public class SubscribEventDto {
     private long followerId;
     private long followeeId;
     @JsonDeserialize(using = LocalDateTimeArrayDeserializer.class)

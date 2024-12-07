@@ -2,7 +2,7 @@ package faang.school.notificationservice.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import faang.school.notificationservice.client.UserServiceClient;
-import faang.school.notificationservice.dto.FollowerEvent;
+import faang.school.notificationservice.dto.SubscribEventDto;
 import faang.school.notificationservice.dto.UserDto;
 import faang.school.notificationservice.messaging.UnfollowMessageBuilder;
 import faang.school.notificationservice.service.NotificationService;
@@ -37,15 +37,15 @@ public class UnfollowEventListener implements MessageListener {
         }
 
         try {
-            FollowerEvent unfollowerEvent = objectMapper.readValue(messageBody, FollowerEvent.class);
+            SubscribEventDto unfollowerEventDto = objectMapper.readValue(messageBody, SubscribEventDto.class);
             log.info("Десериализовано событие: followerId={}, followeeId={}, время события={}",
-                unfollowerEvent.getFollowerId(), unfollowerEvent.getFolloweeId(), unfollowerEvent.getEventTime());
+                unfollowerEventDto.getFollowerId(), unfollowerEventDto.getFolloweeId(), unfollowerEventDto.getEventTime());
 
-            UserDto user = userServiceClient.getUser(unfollowerEvent.getFolloweeId());
+            UserDto user = userServiceClient.getUser(unfollowerEventDto.getFolloweeId());
             log.info("Получены данные пользователя: userId={}, email={}, предпочтение={}",
                 user.getId(), user.getEmail(), user.getPreferredContact());
 
-            String text = unfollowMessageBuilder.buildMessage(unfollowerEvent, Locale.getDefault());
+            String text = unfollowMessageBuilder.buildMessage(unfollowerEventDto, Locale.getDefault());
             log.info("Сформировано сообщение для уведомления: {}", text);
 
             notificationServices.stream()
@@ -60,7 +60,7 @@ public class UnfollowEventListener implements MessageListener {
                 );
 
         } catch (Exception e) {
-            log.error("Ошибка обработки FollowerEvent", e);
+            log.error("Ошибка обработки SubscribEventDto", e);
         }
     }
 }

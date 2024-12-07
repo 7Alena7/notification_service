@@ -14,9 +14,6 @@ public class RedisProperties {
     @Value("${spring.data.redis.port}")
     private int port;
 
-    @Value("${spring.data.redis.channel.follower}")
-    private String followerChannel;
-
     @Value("${spring.data.redis.channel.unfollow}")
     private String unfollowChannel;
 }
